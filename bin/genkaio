@@ -1,0 +1,80 @@
+#!/usr/bin/ruby
+require 'optparse'
+
+#パラメータ
+opt = OptionParser.new
+hiragana=[nil,nil]
+length=0
+line_number=10
+helpshow=false
+
+#ヘルプ
+def help()
+ STDERR.puts <<-'USAGE'
+  COMMAND:
+             genkaio - 某しりとりアプリの回答候補を表示.
+  USAGE:
+             genkaio [first hiragana] [length]
+                     [-l, --line-number(default:10)]
+                     [-e, --end(default:nil)]
+             genkaio [--help]
+             genkaio [-h]
+  EXAMPLE:
+             genkaio あ8
+             genkaio あ 10 -l5 -e る
+  USAGE
+ exit(false)
+end
+
+#オプションのパース
+opt.on('-h', '--help') {
+ helpshow=true
+}
+opt.on('-l VALUE', '--line-number VALUE', Integer) {|v|
+ if v.to_i>=0
+  line_number=v.to_i
+ end
+}
+opt.on('-e VALUE', '--end VALUE', String) {|v|
+ if v=~/^[あ-んー]$/
+  hiragana[1]=v[0]
+ end
+}
+opt.parse!($*)
+
+#あ10, あ 10といったスページングに対応
+if $*.size==1 && $*[0][0]=~/^[あ-ん]$/ && $*[0][1,100].to_i>1
+ hiragana[0]=$*[0][0]
+ length=$*[0][1,100].to_i-2
+elsif $*.size==2 && $*[0]=~/^[あ-ん]$/ && $*[1].to_i>1
+ hiragana[0]=$*[0]
+ length=$*[1].to_i-2
+else
+ helpshow=true
+end
+
+#ヘルプフラグの処理
+#helpshowがtrueならエラー終了
+if helpshow
+ help
+end
+
+#ファイルを開いて検索
+File.open("../dic/marged_with_midashi","r"){|f|
+
+ #ひらがな->カタカナの置換
+ hiragana.map!{|_|_.tr('ぁ-ん','ァ-ン') if !_.nil?}
+
+ hitdata=f.read.split("\n")
+
+ if hiragana[1].nil?
+  puts hitdata.grep(/ #{hiragana[0]}.{#{length}}[^ン]$/)
+  .shuffle[0,line_number]
+ else
+  puts hitdata.grep(/ #{hiragana[0]}.{#{length}}[#{hiragana[1]}]$/)
+  .shuffle[0,line_number]
+ end
+
+}
+
+exit(true)
