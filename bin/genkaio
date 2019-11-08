@@ -3,6 +3,7 @@ require 'optparse'
 
 #パラメータ
 opt = OptionParser.new
+dicpath=__dir__+"/../dic/dicdata_2019_1108"
 hiragana=[nil,nil]
 length=0
 line_number=10
@@ -60,7 +61,7 @@ if helpshow
 end
 
 #ファイルを開いて検索
-File.open("../dic/marged_with_midashi","r"){|f|
+File.open(dicpath, "r"){|f|
 
  #ひらがな->カタカナの置換
  hiragana.map!{|_|_.tr('ぁ-ん','ァ-ン') if !_.nil?}
@@ -69,10 +70,10 @@ File.open("../dic/marged_with_midashi","r"){|f|
 
  if hiragana[1].nil?
   puts hitdata.grep(/ #{hiragana[0]}.{#{length}}[^ン]$/)
-  .shuffle[0,line_number]
+  .shuffle[0,line_number].map{|_|_.tr('ァ-ン','ぁ-ん')}
  else
   puts hitdata.grep(/ #{hiragana[0]}.{#{length}}[#{hiragana[1]}]$/)
-  .shuffle[0,line_number]
+  .shuffle[0,line_number].map{|_|_.tr('ァ-ン','ぁ-ん')}
  end
 
 }
