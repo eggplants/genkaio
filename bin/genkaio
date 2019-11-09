@@ -1,6 +1,13 @@
 #!/usr/bin/ruby
 require 'optparse'
 
+
+if $*==[] && RUBY_PLATFORM =~ /linux/
+loop{
+ puts`read i;ruby genkaio $i`
+}
+end
+
 #パラメータ
 opt = OptionParser.new
 dicpath=__dir__+"/../dic/dicdata_2019_1108"
@@ -42,14 +49,16 @@ opt.on('-e VALUE', '--end VALUE', String) {|v|
  end
 }
 opt.parse!($*)
+args=$*
+args.map!{|_|_.tr("０-９Ａ-Ｚａ-ｚ　ー","0-9A-Za-z -")}
 
 #あ10, あ 10といったスページングに対応
-if $*.size==1 && $*[0][0]=~/^[あ-ん]$/ && $*[0][1,100].to_i>1
- hiragana[0]=$*[0][0]
- length=$*[0][1,100].to_i-2
-elsif $*.size==2 && $*[0]=~/^[あ-ん]$/ && $*[1].to_i>1
- hiragana[0]=$*[0]
- length=$*[1].to_i-2
+if args.size==1 && args[0][0]=~/^[あ-ん]$/ && args[0][1,100].to_i>1
+ hiragana[0]=args[0][0]
+ length=args[0][1,100].to_i-2
+elsif args.size==2 && args[0]=~/^[あ-ん]$/ && args[1].to_i>1
+ hiragana[0]=args[0]
+ length=args[1].to_i-2
 else
  helpshow=true
 end
