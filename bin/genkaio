@@ -9,13 +9,18 @@ puts <<-'EOS'
 == Ctrl+C,exit->quit ==
 EOS
 loop{
- count+=1
- print("genkaio:#{"%03d"%count}>>")
- i=gets.chomp
- exit(true) if i=="exit"
- puts "=================="
- puts(`ruby genkaio #{i}`)
- puts "=================="
+ begin
+  count+=1
+  print("genkaio:#{"%03d"%count}>>")
+  i=gets.chomp
+  exit(true) if i=="exit"
+  puts "=================="
+  puts(`ruby genkaio #{i}`)
+  puts "=================="
+ rescue Interrupt
+  puts
+  exit(true)
+ end
 }
 end
 
