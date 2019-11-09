@@ -3,6 +3,7 @@ require 'optparse'
 
 
 if $*==[] && RUBY_PLATFORM =~ /linux/
+puts`==INTERACTIVE MODE==`
 loop{
  puts`read i;ruby genkaio $i`
 }
