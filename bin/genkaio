@@ -3,9 +3,19 @@ require 'optparse'
 
 
 if $*==[] && RUBY_PLATFORM =~ /linux/
-puts`==INTERACTIVE MODE==`
+count=0
+puts <<-'EOS'
+== INTERACTIVE  MODE ==
+== Ctrl+C,exit->quit ==
+EOS
 loop{
- puts`read i;ruby genkaio $i`
+ count+=1
+ print("genkaio:#{"%03d"%count}>>")
+ i=gets.chomp
+ exit(true) if i=="exit"
+ puts "=================="
+ puts(`ruby genkaio #{i}`)
+ puts "=================="
 }
 end
 
