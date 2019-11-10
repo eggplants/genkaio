@@ -40,7 +40,7 @@ def help()
   USAGE:
              genkaio [first hiragana] [length]
                      [-l, --line-number(default:10)]
-                     [-e, --end(default:nil)]
+                     [-e, -f, --end(default:nil)]
              genkaio [--help]
              genkaio [-h]
   EXAMPLE:
@@ -59,7 +59,7 @@ opt.on('-l VALUE', '--line-number VALUE', Integer) {|v|
   line_number=v.to_i
  end
 }
-opt.on('-e VALUE', '--end VALUE', String) {|v|
+opt.on('-e VALUE', '-f VALUE','--end VALUE', String) {|v|
  if v=~/^[あ-んー]$/
   hiragana[1]=v[0]
  end
