@@ -64,9 +64,10 @@ opt.on('-e VALUE', '-f VALUE','--end VALUE', String) {|v|
   hiragana[1]=v[0]
  end
 }
-opt.parse!($*)
 args=$*
 args.map!{|_|_.tr("０-９Ａ-Ｚａ-ｚ　ー","0-9A-Za-z -")}
+p args.map!(&:split).flatten!
+opt.parse!(args)
 
 #あ10, あ 10といったスページングに対応
 if args.size==1 && args[0][0]=~/^[あ-ん]$/ && args[0][1,100].to_i>1
