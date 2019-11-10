@@ -15,7 +15,7 @@ loop{
   i=gets.chomp
   exit(true) if i=="exit"
   puts "=================="
-  puts(`ruby $(which genkaio) #{i}`)
+  puts(`[ -n "#{i}" ]&&ruby $(which genkaio) #{i}`)
   puts "=================="
  rescue Interrupt
   puts
