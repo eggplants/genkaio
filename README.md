@@ -2,6 +2,10 @@
 
 某しりとりアプリの回答候補を表示するコマンド.
 
+# DEMO
+
+![DEMO](https://raw.githubusercontent.com/eggplants/genkaio/master/demo.gif)
+
 ## 使い方
 
 ```bash
