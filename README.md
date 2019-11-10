@@ -10,7 +10,7 @@
   USAGE:
              genkaio [first hiragana] [length]
                      [-l, --line-number(default:10)]
-                     [-e, --end(default:nil)]
+                     [-e, -f, --end(default:nil)]
              genkaio [--help]
              genkaio [-h]
   EXAMPLE:
