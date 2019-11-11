@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    genkaio (0.1.0)
+    genkaio (0.0.0)
 
 GEM
   remote: https://rubygems.org/

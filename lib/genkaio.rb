@@ -15,8 +15,8 @@ module Genkaio
    if RUBY_PLATFORM =~ /linux/
     count=0
     puts <<-'EOS'
-== INTERACTIVE  MODE ==
-== Ctrl+C,exit->quit ==
+    == INTERACTIVE  MODE ==
+    == Ctrl+C,exit->quit ==
     EOS
     loop{
      begin
@@ -25,7 +25,7 @@ module Genkaio
       i=gets.chomp
       exit(true) if i=="exit"
       puts "=================="
-      puts(`[ -n "#{i}" ]&&ruby $(which genkaio) #{i}`)
+      puts(`[ -n "#{i}" ]&&genkaio #{i}`)
       puts "=================="
      rescue Interrupt
       puts
@@ -39,7 +39,7 @@ module Genkaio
   def self.help(boo)
    STDERR.puts <<-'USAGE'
     COMMAND:
-               genkaio - 某しりとりアプリの回答候補を表示.
+               genkaio - Show candidate answers for "genkai-shiritori"
     USAGE:
                genkaio [first hiragana] [length]
                        [-l, --line-number(default:10)]
