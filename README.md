@@ -14,7 +14,7 @@
   USAGE:
              genkaio [first hiragana] [length]
                      [-l, --line-number(default:10)]
-                     [-e, -f, --end(default:nil)]
+                     [-e, -f, --last hiragana(default:nil)]
              genkaio [--help]
              genkaio [-h]
   EXAMPLE:
