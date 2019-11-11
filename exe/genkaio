@@ -1,0 +1,81 @@
+#!/usr/bin/ruby
+require 'optparse'
+require_relative '../lib/genkaio'
+
+#interactive mode
+if $*==[] && RUBY_PLATFORM =~ /linux/
+count=0
+puts <<-'EOS'
+== INTERACTIVE  MODE ==
+== Ctrl+C,exit->quit ==
+EOS
+loop{
+ begin
+  count+=1
+  print("genkaio:#{"%03d"%count}>>")
+  i=gets.chomp
+  exit(true) if i=="exit"
+  puts "=================="
+  puts(`[ -n "#{i}" ]&&ruby $(which genkaio) #{i}`)
+  puts "=================="
+ rescue Interrupt
+  puts
+  exit(true)
+ end
+}
+end
+
+#option parse
+hiragana=[nil,nil]
+length=0
+line_number=10
+
+
+#オプションのパース
+opt = OptionParser.new
+
+opt.on('-h', '--help') {
+ help
+}
+opt.on('-l VALUE', '--line-number VALUE', Integer) {|v|
+ if v.to_i>=0
+  line_number=v.to_i
+ end
+}
+opt.on('-e VALUE', '-f VALUE','--end VALUE', String) {|v|
+ if v=~/^[あ-んー]$/
+  hiragana[1]=v[0]
+ end
+}
+opt.on('-v'){
+ puts Genkaio.version
+}
+
+args=$*
+#change full-width args into half-width
+args.map!{|_|_.tr("０-９Ａ-Ｚａ-ｚ　ー","0-9A-Za-z -")}
+
+args.map!(&:split).flatten!
+opt.parse!(args)
+
+if args.size==1 && args[0][0]=~/^[あ-ん]$/ && args[0][1,100].to_i>1
+ hiragana[0]=args[0][0]
+ length=args[0][1,100].to_i-2
+elsif args.size==2 && args[0]=~/^[あ-ん]$/ && args[1].to_i>1
+ hiragana[0]=args[0]
+ length=args[1].to_i-2
+else
+  helpshow=true
+end
+
+#exit(1) if helpshow<-true
+if helpshow
+ help
+end
+
+result=Genkaio.search(
+ Genkaio.getDirpath,
+ hiragana,
+ length,
+ line_number
+)
