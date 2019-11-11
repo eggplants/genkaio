@@ -43,7 +43,7 @@ module Genkaio
     USAGE:
                genkaio [first hiragana] [length]
                        [-l, --line-number(default:10)]
-                       [-e, -f, --end(default:nil)]
+                       [-e, -f, --last(default:nil)]
                genkaio [--help]
                genkaio [-h]
     EXAMPLE:
