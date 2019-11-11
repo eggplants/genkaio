@@ -8,6 +8,13 @@
 
 ![DEMO](https://raw.githubusercontent.com/eggplants/genkaio/master/demo.gif)
 
+
+## インストール
+
+```bash
+$ gem install genkaio
+```
+
 ## 使い方
 
 ```bash
@@ -54,11 +61,6 @@ $ genkaio わ14 -l5
 和光経済研究所 わこうけいざいけんきゅうしょ
 わーなー・こみゅにけーしょんず わーなーこみゅにけーしょんず
 
-```
-## インストール
-
-```bash
-$ gem install genkaio
 ```
 
 ## 使用辞書
