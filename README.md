@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/genkaio.svg)](https://badge.fury.io/rb/genkaio)
+
 # genkaioとは...
 
 某しりとりアプリの回答候補を表示するコマンド.
@@ -54,16 +56,10 @@ $ genkaio わ14 -l5
 
 ```
 ## インストール
-- ubuntu
+
+```bash
+$ gem install genkaio
 ```
-$ git clone https://github.com/eggplants/genkaio.git
-$ cd genkaio
-$ chmod 755 bin/genkaio
-$ cp bin/genkaio ~/usr/local/bin/
-$ cp -r dic/ ~/usr/local/
-$ cd ..; rm -r genkaio
-```
-(おいおいgemにするかも)
 
 ## 使用辞書
 
