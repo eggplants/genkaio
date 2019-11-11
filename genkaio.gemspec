@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.name          = "genkaio"
   spec.version       = Genkaio::VERSION
   spec.authors       = ["haruna"]
-  spec.email         = ["eggplants@github.com"]
+  spec.email         = ["h.wataru.1016@gmail.com"]
 
   spec.summary       = %q{A cheat tool for genkai-shiritori}
   spec.description   = %q{This enables you to search words of ipadic-NEologd by an inicial and length of target word (like "あ10")}
