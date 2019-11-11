@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 require 'optparse'
+require_relative '../lib/genkaio'
 
-
+#interactive mode
 if $*==[] && RUBY_PLATFORM =~ /linux/
 count=0
 puts <<-'EOS'
@@ -24,35 +25,17 @@ loop{
 }
 end
 
-#パラメータ
-opt = OptionParser.new
-dicpath=__dir__+"/../dic/dicdata_2019_1108"
+#option parse
 hiragana=[nil,nil]
 length=0
 line_number=10
-helpshow=false
 
-#ヘルプ
-def help()
- STDERR.puts <<-'USAGE'
-  COMMAND:
-             genkaio - 某しりとりアプリの回答候補を表示.
-  USAGE:
-             genkaio [first hiragana] [length]
-                     [-l, --line-number(default:10)]
-                     [-e, -f, --end(default:nil)]
-             genkaio [--help]
-             genkaio [-h]
-  EXAMPLE:
-             genkaio あ8
-             genkaio あ 10 -l5 -e る
-  USAGE
- exit(false)
-end
 
 #オプションのパース
+opt = OptionParser.new
+
 opt.on('-h', '--help') {
- helpshow=true
+ help
 }
 opt.on('-l VALUE', '--line-number VALUE', Integer) {|v|
  if v.to_i>=0
@@ -64,12 +47,17 @@ opt.on('-e VALUE', '-f VALUE','--end VALUE', String) {|v|
   hiragana[1]=v[0]
  end
 }
+opt.on('-v'){
+ puts Genkaio.version
+}
+
 args=$*
+#change full-width args into half-width
 args.map!{|_|_.tr("０-９Ａ-Ｚａ-ｚ　ー","0-9A-Za-z -")}
-p args.map!(&:split).flatten!
+
+args.map!(&:split).flatten!
 opt.parse!(args)
 
-#あ10, あ 10といったスページングに対応
 if args.size==1 && args[0][0]=~/^[あ-ん]$/ && args[0][1,100].to_i>1
  hiragana[0]=args[0][0]
  length=args[0][1,100].to_i-2
@@ -77,31 +65,17 @@ elsif args.size==2 && args[0]=~/^[あ-ん]$/ && args[1].to_i>1
  hiragana[0]=args[0]
  length=args[1].to_i-2
 else
- helpshow=true
+  helpshow=true
 end
 
-#ヘルプフラグの処理
-#helpshowがtrueならエラー終了
+#exit(1) if helpshow<-true
 if helpshow
  help
 end
 
-#ファイルを開いて検索
-File.open(dicpath, "r"){|f|
-
- #ひらがな->カタカナの置換
- hiragana.map!{|_|_.tr('ぁ-ん','ァ-ン') if !_.nil?}
-
- hitdata=f.read.split("\n")
-
- if hiragana[1].nil?
-  puts hitdata.grep(/ #{hiragana[0]}.{#{length}}[^ン]$/)
-  .shuffle[0,line_number].map{|_|_.tr('ァ-ン','ぁ-ん')}
- else
-  puts hitdata.grep(/ #{hiragana[0]}.{#{length}}[#{hiragana[1]}]$/)
-  .shuffle[0,line_number].map{|_|_.tr('ァ-ン','ぁ-ん')}
- end
-
-}
-
-exit(true)
+result=Genkaio.search(
+ Genkaio.getDirpath,
+ hiragana,
+ length,
+ line_number
+)
