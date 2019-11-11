@@ -15,16 +15,20 @@ line_number=10
 opt = OptionParser.new
 
 opt.on('-h', '--help') {
- help(true)
+ Genkaio.help(true)
 }
 opt.on('-l VALUE', '--line-number VALUE', Integer) {|v|
  if v.to_i>=0
   line_number=v.to_i
+ else
+  raise ArgumentError, "line-number should be >=0"
  end
 }
-opt.on('-e VALUE', '-f VALUE','--end VALUE', String) {|v|
+opt.on('-e VALUE', '-f VALUE','--last VALUE', String) {|v|
  if v=~/^[ァ-ンー]$/
   hiragana[1]=v[0]
+ else
+  raise ArgumentError, "last hiragana should be one"
  end
 }
 opt.on('-v'){
@@ -48,7 +52,7 @@ elsif args.size==2 && args[0]=~/^[ァ-ン]$/ && args[1].to_i>1
  hiragana[0]=args[0]
  length=args[1].to_i-2
 else
-  Genkaio.help(false)
+  raise ArgumentError, ""
 end
 
 result=Genkaio.search(
